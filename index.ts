@@ -1,4 +1,3 @@
-
 /*
  * Copyright 2020 Trenton D. Adams
  *
@@ -24,29 +23,45 @@
  *
  * As an example, if you wanted to work on your code, have it completely
  * functional while using it locally but have production make a REST call,
- * then you can do that by implementing the REST call in the decorated method,
- * but put test/development versions in the method_test and method_development
- * methods, while making them private so they aren't part of the normal API.
- * This allows very rapid development on the UI, completely independently of
- * the REST API.  It's a good fit for developing Single Page Applications.
+ * then you can do that by implementing the REST call in the decorated method
+ * named "method".  Put test/development versions in the method_test and
+ * method_development methods respectively, while making them private so they
+ * aren't part of the normal API. This allows very rapid development on the UI,
+ * completely independently of the REST API.  It's a good fit for developing
+ * Single Page Applications.
  *
+ * See the README for concrete examples.
+ *
+ * @param environments the list of environments that you may want swapped out
+ *   for a different function call.
+ * @param environment used for testing only, forces the environment to what
+ * you specify.  This defaults to process.env.NODE_ENV
+ * @param debug do you want verbose output during the run?
  * @constructor
  */
-export function EnvFake(strings: string[],
+export function EnvFake(environments: string[],
   environment = process.env.NODE_ENV, debug = false): any
 {
-  if (debug)
-    console.log('NODE_ENV: ', process.env.NODE_ENV);
-  if (strings.filter(env => env === environment).length === 1)
+  console.debug('NODE_ENV: ', process.env.NODE_ENV);
+  if (environments.filter(env => env === environment).length === 1)
   {
+    console.debug('environments: ', environments, ', matched: ', environment);
     return function (target: any, propertyKey: string,
       descriptor: PropertyDescriptor) {
-      if (debug)
-        console.log('target: ', target, propertyKey, descriptor);
+      console.debug('target: ', target, propertyKey, descriptor);
       // replace and return function
       target[propertyKey] = target[propertyKey + "_" + environment];
       return target[propertyKey + "_" + environment];
     };
+  }
+  else
+  {
+    console.debug('environments: ', environments, ', did not match: ',
+      environment);
+    return function (target: any, propertyKey: string,
+      descriptor: PropertyDescriptor) {
+      // do nothing for production
+    }
   }
 }
 

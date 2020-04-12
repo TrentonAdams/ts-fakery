@@ -38,6 +38,7 @@ describe('test fakery works', function () {
     }
     expect(new MyObject().getEnv()).toBe('test');
   });
+
   it('should fake for development', function () {
     class MyObject
     {
@@ -59,6 +60,7 @@ describe('test fakery works', function () {
     }
     expect(new MyObject().getEnv()).toBe('development');
   });
+
   it('should not fake for production', function () {
     class MyObject
     {

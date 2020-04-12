@@ -4,6 +4,7 @@ Ideally we'd have some sort of IoC container, but inversifyjs is just ugly, so u
 
 ## Releases
 
+* v1.0.4 - attempt to fix a bug
 * v1.0.3 - updated with Apache 2.0 license 
 * v1.0.2 - updated with README 
 * v1.0.1 - initial release
