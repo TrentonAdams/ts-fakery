@@ -1,0 +1,28 @@
+{
+  "name": "ts-fakery",
+  "version": "1.0.0",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "license": "Apache-2.0",
+  "files": [
+    "dist/**/*"
+  ],
+  "devDependencies": {
+    "@types/jest": "^25.2.1",
+    "@types/node": "^13.11.1",
+    "jest": "^25.3.0",
+    "ts-jest": "^25.3.1",
+    "typescript": "^3.8.3"
+  },
+  "author": {
+    "email": "ts-fakery@trentonadams.ca",
+    "name": "Trenton D. Adams",
+    "url": "https://github.com/TrentonAdams/ts-fakery"
+  },
+  "scripts": {
+    "prepublish": "yarn build",
+    "test": "jest",
+    "build": "tsc"
+  },
+  "dependencies": {}
+}
