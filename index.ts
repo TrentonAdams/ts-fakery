@@ -14,6 +14,9 @@
  * limitations under the License.
  */
 
+
+import {log} from "util";
+
 /**
  * This will replace the function with an "_environment" (e.g. method_test or
  * method_development) version if one is available.  This allows one to change
@@ -36,11 +39,10 @@
  *   for a different function call.
  * @param environment used for testing only, forces the environment to what
  * you specify.  This defaults to process.env.NODE_ENV
- * @param debug do you want verbose output during the run?
  * @constructor
  */
 export function EnvFake(environments: string[],
-  environment = process.env.NODE_ENV, debug = false): any
+  environment = process.env.NODE_ENV): any
 {
   console.debug('NODE_ENV: ', process.env.NODE_ENV);
   if (environments.filter(env => env === environment).length === 1)
@@ -61,6 +63,52 @@ export function EnvFake(environments: string[],
     return function (target: any, propertyKey: string,
       descriptor: PropertyDescriptor) {
       // do nothing for production
+    }
+  }
+}
+
+/**
+ * Provides the ability to cause a factory function to return a different
+ * objected depending on the NODE_ENV used.  This allows you to write a
+ * production only factory, while automatically replacing the returned instance
+ * with a new instance for dev or test.
+ *
+ * @param {Object.<string, Object>} environments
+ * @param environment for testing only, the environment you're trying to test.
+ * @constructor
+ */
+export function EnvFactory(environments: any,
+  environment: string | any = process.env.NODE_ENV): any
+{
+  let logger = (...args: any[]) => {};
+  if (process.env.tsfakery_debug === 'true')
+  {
+     logger = console.debug
+  }
+  logger('NODE_ENV: ', environment);
+  const keys = Object.keys(environments);
+  if (keys.filter(key => key === environment).length === 1)
+  {
+    logger('environments: ', environments, ', matched: ', environment);
+    const env = environment;
+    return function (target: any, propertyKey: string,
+      descriptor: PropertyDescriptor) {
+      logger('target: ', target, propertyKey, descriptor);
+      // replace and return function
+      let newFunction = function () {
+        return new (environments[environment])(arguments);
+      };
+      target[propertyKey] = newFunction;
+      return newFunction;
+    };
+  }
+  else
+  {
+    logger('environments: ', environments, ', did not match: ',
+      environment);
+    return function (target: any, propertyKey: string,
+      descriptor: PropertyDescriptor) {
+      // use the original object by returning a function that does nothing.
     }
   }
 }

@@ -2,8 +2,11 @@ ts-fakery was created for the purpose of "faking" apis during development and je
 
 Ideally we'd have some sort of IoC container, but inversifyjs is just ugly, so until I find something better, or build my own, this is what I'll do.  It at least gets me going.
 
+Always keep in mind that typescript decorators are an experimental feature and may not work with future releases of typescript.  At the time of building this I am using typescript 3.6.3.
+
 ## Releases
 
+* v1.1.0 - add @EnvFactory
 * v1.0.4 - attempt to fix a bug
 * v1.0.3 - updated with Apache 2.0 license 
 * v1.0.2 - updated with README 
@@ -27,7 +30,14 @@ See the License for the specific language governing permissions and
 limitations under the License.
 ```
 
-## Usage
+## Features
+
+This module has the following features... 
+
+1. fake methods in a class by calling a different method for each environment.
+2. replace a factory method with a method that returns a different object depending on the environment in use.  e.g. production, development, or test.
+
+## @EnvFake Usage
 
 Our usage will involve running an automated test that demonstrates how to use
 `@EnvFake`
@@ -141,3 +151,64 @@ NODE_ENV=production yarn jest
 ```
 
 Now you can obviously remove all the tests and simply use `@EnvFake`.
+
+## @EnvFactory Usage
+
+You can do an automated test like above if you like, but the usage basics are like this...
+
+1. Create the classes you need
+2. Create a factory with a "create" function
+3. Annotate the create function with the `@EnvFactory` decorator.   
+
+
+```javascript
+// put this in tmp.js  
+import {EnvFactory} from "ts-fakery";
+
+class TestObject
+{
+    getInfo()
+    {
+        return 'TestObject';
+    }
+}
+
+class DevObject
+{
+    getInfo()
+    {
+        return 'DevObject';
+    }
+}
+
+class ProdObject
+{
+    getInfo()
+    {
+        return "ProdObject"
+    }
+}
+
+class MyFactory
+{
+    @EnvFactory({"test": TestObject, "development": DevObject})
+    create(): any
+    {
+        return new ProdObject();
+    }
+}
+
+console.log('You are running the', new MyFactory().create().getInfo(),
+    'object');
+
+```
+
+If you've created a node project already, just add typescript and ts-fakery, and away you go...
+
+```bash                                 
+yarn add ts-fakery typescript
+yarn tsc --experimentalDecorators tmp.ts
+node tmp.js
+NODE_ENV=development node tmp.js
+NODE_ENV=test node tmp.js
+```
