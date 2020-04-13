@@ -14,7 +14,8 @@
  * limitations under the License.
  */
 
-import {EnvFactory, EnvFake} from "../index";
+
+import {EnvFactory} from "../index";
 
 class TestObject {
 

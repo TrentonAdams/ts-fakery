@@ -6,6 +6,7 @@ Always keep in mind that typescript decorators are an experimental feature and m
 
 ## Releases
 
+* v1.1.1 - no functionality changes, just splitting objects up into files.
 * v1.1.0 - add @EnvFactory
 * v1.0.4 - attempt to fix a bug
 * v1.0.3 - updated with Apache 2.0 license 
@@ -161,7 +162,7 @@ You can do an automated test like above if you like, but the usage basics are li
 3. Annotate the create function with the `@EnvFactory` decorator.   
 
 
-```javascript
+```typescript
 // put this in tmp.js  
 import {EnvFactory} from "ts-fakery";
 
