@@ -44,7 +44,9 @@ export function EnvFactory(environments: any,
             logger('target: ', target, propertyKey, descriptor);
             // replace and return function
             let newFunction = function () {
-                return new (environments[environment])(arguments);
+              const args = Array.prototype.slice.call(arguments, 0);
+              let Constructor = environments[environment];
+              return Reflect.construct(Constructor,args);
             };
             target[propertyKey] = newFunction;
             return newFunction;

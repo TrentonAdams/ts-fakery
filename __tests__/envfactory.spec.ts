@@ -17,23 +17,55 @@
 
 import {EnvFactory} from "../index";
 
-class TestObject {
+class TestObject
+{
+  private _constructorParam: string;
+  private _constructorParam2: string;
 
-  getInfo(){
-    return 'TestObject';
+  constructor(constructorParam: string, constructorParam2: string)
+  {
+    this._constructorParam = constructorParam;
+    this._constructorParam2 = constructorParam2;
+  }
+
+  getInfo()
+  {
+    return 'TestObject' + this._constructorParam + this._constructorParam2;
   }
 }
 
-class DevObject {
+class DevObject
+{
+  private _constructorParam: string;
+  private _constructorParam2: string;
 
-  getInfo(){
-    return 'DevObject';
+  constructor(constructorParam: string, constructorParam2: string)
+  {
+    this._constructorParam = constructorParam;
+    this._constructorParam2 = constructorParam2;
+  }
+
+  getInfo()
+  {
+    return 'DevObject' +this._constructorParam + this._constructorParam2;
   }
 }
 
-class ProdObject {
-  getInfo(){
-    return "ProdObject"
+class ProdObject
+{
+  private _constructorParam: string;
+  private _constructorParam2: string;
+
+  constructor(constructorParam: string, constructorParam2: string)
+  {
+    this._constructorParam = constructorParam;
+    this._constructorParam2 = constructorParam2;
+
+  }
+
+  getInfo()
+  {
+    return "ProdObject" + this._constructorParam + this._constructorParam2
   }
 }
 
@@ -42,24 +74,32 @@ describe('test factory fakeries work', function () {
     class MyFactory
     {
       @EnvFactory({"test": TestObject, "development": DevObject}, 'production')
-      createProd(): any
+      createProd(example: string, example2: string): any
       {
-        return new ProdObject();
+        return new ProdObject(example, example2);
       }
+
       @EnvFactory({"test": TestObject, "development": DevObject}, 'test')
-      createTest(): any
+      createTest(example: string, example2: string): any
       {
-        return new ProdObject();
+        return new ProdObject(example, example2);
       }
+
       @EnvFactory({"test": TestObject, "development": DevObject}, 'development')
-      createDev(): any
+      createDev(example: string, example2: string): any
       {
-        return new ProdObject();
+        return new ProdObject(example, example2);
       }
     }
-    expect(new MyFactory().createTest() instanceof TestObject).toBe(true);
-    expect(new MyFactory().createDev() instanceof DevObject).toBe(true);
-    expect(new MyFactory().createProd() instanceof ProdObject).toBe(true);
+
+    let factory = new MyFactory();
+    expect(factory.createTest('param', "param2") instanceof TestObject).toBe(true);
+    expect(factory.createDev('param', "param2") instanceof DevObject).toBe(true);
+    expect(factory.createProd('param', 'param2') instanceof ProdObject).toBe(true);
+
+    expect(factory.createTest('param', "param2").getInfo()).toBe('TestObjectparamparam2');
+    expect(factory.createDev('param', "param2").getInfo()).toBe('DevObjectparamparam2');
+    expect(factory.createProd('param', 'param2').getInfo()).toBe('ProdObjectparamparam2');
   });
 
 });

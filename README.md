@@ -6,6 +6,7 @@ Always keep in mind that typescript decorators are an experimental feature and m
 
 ## Releases
 
+* v1.1.2 - add support for multiple arguments to constructors
 * v1.1.1 - no functionality changes, just splitting objects up into files.
 * v1.1.0 - add @EnvFactory
 * v1.0.4 - attempt to fix a bug
