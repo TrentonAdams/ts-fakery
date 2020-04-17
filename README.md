@@ -1,18 +1,4 @@
-ts-fakery was created for the purpose of "faking" apis during development and jest testing.  This allows us to develop applications in a focused way without worrying about what the server API (e.g. REST) will look like.  Essentially this allows us to abstract the API calls into classes that do the work, and have the functionality swapped out for the NODE_ENV.
-
-Ideally we'd have some sort of IoC container, but inversifyjs is just ugly, so until I find something better, or build my own, this is what I'll do.  It at least gets me going.
-
-Always keep in mind that typescript decorators are an experimental feature and may not work with future releases of typescript.  At the time of building this I am using typescript 3.6.3.
-
-## Releases
-
-* v1.1.2 - add support for multiple arguments to constructors
-* v1.1.1 - no functionality changes, just splitting objects up into files.
-* v1.1.0 - add @EnvFactory
-* v1.0.4 - attempt to fix a bug
-* v1.0.3 - updated with Apache 2.0 license 
-* v1.0.2 - updated with README 
-* v1.0.1 - initial release
+ts-ioc was created for the purpose of using IoC with TypeScript. 
 
 ## Copyright
 
@@ -32,6 +18,25 @@ See the License for the specific language governing permissions and
 limitations under the License.
 ```
 
+## Overview
+
+Ideally we'd have some sort of IoC container already, but inversifyjs is just ugly, so until I find something better, or work this out, this is what I'll do.  It at least gets me going.
+
+In some cases we also provide the ability to fake which object you want during development, testing, or production.  This allows us to develop applications in a focused way without worrying about what the server API (e.g. REST) will look like.  Essentially this allows us to abstract the API calls into classes that do the work, and have the functionality swapped out for the NODE_ENV.  This works really well with frameworks like React, because then you can focus on the UI, and worry about the API at a later time.  It also ensures that all testing you do during development is all about the front-end, because ultimately a front-end SPA is a separate piece from the REST API. 
+
+Always keep in mind that typescript decorators are an experimental feature and may not work with future releases of typescript.  At the time of building this I am using typescript 3.6.3.
+
+## Releases
+
+* v1.2.0 - renamed to ts-ioc and released as such.
+* v1.1.2 - add support for multiple arguments to constructors
+* v1.1.1 - no functionality changes, just splitting objects up into files.
+* v1.1.0 - add @EnvFactory
+* v1.0.4 - attempt to fix a bug
+* v1.0.3 - updated with Apache 2.0 license 
+* v1.0.2 - updated with README 
+* v1.0.1 - initial release
+
 ## Features
 
 This module has the following features... 
@@ -47,7 +52,7 @@ Our usage will involve running an automated test that demonstrates how to use
 Install the required libraries for automated testing with jest + typescript...
 
 ```bash
-yarn add ts-fakery
+yarn add ts-ioc
 yarn add -D @types/jest @types/node jest ts-jest typescript
 ```
 
@@ -68,11 +73,11 @@ You'll need some settings in your `jest.config.js`, beyond the defaults.  Add th
    }
 ```
 
-Now setup some tests to show ts-fakery at work.
+Now setup some tests to show ts-ioc at work.
 
 ```bash
 cat <<SPEC > mytest.spec.ts
-import {EnvFake} from "ts-fakery";
+import {EnvFake} from "ts-ioc";
 
 describe('test fakery works', function () {
     it('should fake for test', function () {
@@ -165,7 +170,7 @@ You can do an automated test like above if you like, but the usage basics are li
 
 ```typescript
 // put this in tmp.js  
-import {EnvFactory} from "ts-fakery";
+import {EnvFactory} from "ts-ioc";
 
 class TestObject
 {
@@ -205,10 +210,10 @@ console.log('You are running the', new MyFactory().create().getInfo(),
 
 ```
 
-If you've created a node project already, just add typescript and ts-fakery, and away you go...
+If you've created a node project already, just add typescript and ts-ioc, and away you go...
 
 ```bash                                 
-yarn add ts-fakery typescript
+yarn add ts-ioc typescript
 yarn tsc --experimentalDecorators tmp.ts
 node tmp.js
 NODE_ENV=development node tmp.js

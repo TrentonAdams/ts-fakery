@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/ts-fakery.iml" filepath="$PROJECT_DIR$/ts-springify.iml" />
+      <module fileurl="file://$PROJECT_DIR$/ts-ioc.iml" filepath="$PROJECT_DIR$/ts-ioc.iml" />
     </modules>
   </component>
 </project>
