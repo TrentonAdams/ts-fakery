@@ -8,11 +8,11 @@
     "dist/**/*"
   ],
   "devDependencies": {
-    "@types/jest": "^25.2.1",
-    "@types/node": "^13.11.1",
-    "jest": "^25.3.0",
-    "ts-jest": "^25.3.1",
-    "typescript": "^3.8.3"
+    "@types/jest": "^26.0.23",
+    "@types/node": "^15.0.2",
+    "jest": "^26.6.3",
+    "ts-jest": "^26.5.6",
+    "typescript": "^4.2.4"
   },
   "author": {
     "email": "ts-fakery@trentonadams.ca",
